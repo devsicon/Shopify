@@ -1,0 +1,84 @@
+{% comment %}
+Show Selective collection image with product range dynamically.
+{% endcomment %}
+
+<section class="products section bg-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="title text-center">
+            <h2>{{ section.settings.collectiontitle }}</h2>
+          </div>
+        </div>
+
+        <div class="row">
+
+            {% assign collectivproduct = collections[section.settings.collection] %}
+            {% for product in collectivproduct.products limit: section.settings.showproduct %}
+            
+          <div class="col-md-4">
+            <div class="product-item">
+              <div class="product-thumb">
+                <span class="bage">Sale</span>
+                <img class="img-responsive" src="{{ product.featured_image.src | img_url: "1920x" }}" alt="product-img">
+                <div class="preview-meta">
+                  <ul>
+                    <li>
+                      <a href="{{ product.url }}"><i class="fa fa-search"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-heart-o"></i></a>
+                    </li>
+                    <li>
+                      <a href=""><i class="fa fa-shopping-cart"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="product-content">
+                <h4><a href="{{ product.url }}">{{ product.title }}</a></h4>
+                <p class="price">{{ product.price | money }}</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  {% schema %}
+  {
+      "name": "Collections",
+      "settings":[
+        {
+            "type": "text",
+            "id": "collectiontitle",
+            "label": "Collection Title"
+        },
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+        },
+        {
+            "type": "range",
+            "id": "showproduct",
+            "label": "Product Show",
+            "min": 2,
+            "max": 9,
+            "default": 2
+        }
+      ],
+      "presets":[
+        {
+            "name": "Collection Section",
+            "category": "Collection"
+        }
+      ]
+
+  }
+  {% endschema %}
