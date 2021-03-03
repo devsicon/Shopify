@@ -1,0 +1,51 @@
+<div class="row pb-5">
+      <div class="col-md-5">
+        <div class="single-product-images">
+          {% for images in product.images %}
+          <div data-thumb="{{ images.src | img_url: "1920x" }}">
+            <img class="img-fluid" src="{{ images.src | img_url: "200x"}}">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-md-7">
+        <div class="single-product-details">
+          <form method="POST" action="/cart/add">
+          <h2>{{ product.title }}</h2>
+          <p class="product-price">{{ product.price | money }}</p>
+          
+
+          {% unless product.has_only_defauld_variant %}
+          {% for product_opotion in product.options_with_values %}
+          <div class="product-category">
+            <span>{{ product_opotion.name }}</span>
+            <select class="form-control">
+              {% for product_value in product_opotion.values %}
+              <option value="{{ product_value }}">{{ product_value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endfor %}
+          {% endunless %}
+
+          
+          <div class="product-quantity">
+            <span>Quantity:</span>
+            <input min="1" type="number" id="quantity" name="quantity" value="1" />
+          </div>
+          <div class="product-category">
+            <span>Categories:</span>
+            <ul>
+              {% for collection in product.collections %}
+              <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+              {% endfor %}
+             
+            </ul>
+          </div>
+          <input type="hidden" id="variant-id" name="id" value="{{ product.variants.first.id }}">
+          <input type="submit" value="Add To Cart" class="btn btn-main">
+        </form>
+        </div>
+      </div>
+    </div>
